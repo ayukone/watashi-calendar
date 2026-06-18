@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>私を大切にするカレンダー</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">今日も戻ってこられた</p>
+          <h1>私を大切にするカレンダー</h1>
+          <p class="lead">
+            完璧にするためではなく、「私は私を大切にできる」と思える日を少しずつ増やす場所です。
+          </p>
+        </div>
+        <div class="today-card">
+          <span id="todayLabel">今日</span>
+          <strong id="todayScore">0/3</strong>
+          <small id="todayMood">戻る場所はここにあるよ</small>
+        </div>
+      </header>
+
+      <main>
+        <section class="toolbar" aria-label="月の操作">
+          <button class="icon-button" id="prevMonth" type="button" aria-label="前の月">‹</button>
+          <h2 id="monthTitle"></h2>
+          <button class="icon-button" id="nextMonth" type="button" aria-label="次の月">›</button>
+        </section>
+
+        <section class="gentle-panel goal-panel">
+          <label for="miniGoal">今日の最小目標</label>
+          <div class="goal-row">
+            <input id="miniGoal" type="text" placeholder="朝プロテインだけで勝ち" maxlength="28" />
+            <button id="saveGoal" type="button">保存</button>
+          </div>
+          <p id="goalMessage">小さく決めるほど、戻りやすくなるよ。</p>
+        </section>
+
+        <section class="calendar-card" aria-label="月間カレンダー">
+          <div class="weekday-row" aria-hidden="true">
+            <span>日</span>
+            <span>月</span>
+            <span>火</span>
+            <span>水</span>
+            <span>木</span>
+            <span>金</span>
+            <span>土</span>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </section>
+
+        <section class="summary-grid">
+          <article class="gentle-panel">
+            <p class="panel-label">今月のまとめ</p>
+            <h3 id="monthTotal">今月は合計0回、自分を大切にできました</h3>
+            <p id="monthEncourage">続ける力より、戻る力を育ててる途中。</p>
+          </article>
+          <article class="gentle-panel">
+            <div class="panel-heading">
+              <p class="panel-label">項目ごとの回数</p>
+              <button id="openHabitEditor" type="button">項目を編集</button>
+            </div>
+            <div id="habitStats" class="habit-stats"></div>
+          </article>
+        </section>
+
+        <section class="gentle-panel backup-panel">
+          <p class="panel-label">バックアップ</p>
+          <div class="backup-actions">
+            <button id="exportJson" type="button">JSONエクスポート</button>
+            <label class="file-button" for="importJson">JSONインポート</label>
+            <input id="importJson" type="file" accept="application/json" />
+          </div>
+          <p id="backupMessage">スマホ変更や念のための保管に使えます。</p>
+        </section>
+      </main>
+    </div>
+
+    <div id="dayModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-header">
+          <div>
+            <p class="eyebrow" id="modalDate"></p>
+            <h2 id="modalTitle">今日の自分を大切にしたこと</h2>
+          </div>
+          <button class="icon-button" data-close-modal type="button" aria-label="閉じる">×</button>
+        </header>
+        <div id="dayMessage" class="day-message"></div>
+        <div id="habitChecks" class="habit-checks"></div>
+        <label class="memo-label" for="dayMemo">1行メモ</label>
+        <input id="dayMemo" type="text" maxlength="60" placeholder="今日の自分にひとこと" />
+        <button id="generateMessage" class="wide-button" type="button">今日のメッセージ</button>
+        <div id="aiMessage" class="ai-message"></div>
+      </section>
+    </div>
+
+    <div id="habitModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-habit-modal></div>
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="habitModalTitle">
+        <header class="modal-header">
+          <div>
+            <p class="eyebrow">自分に合う形に整える</p>
+            <h2 id="habitModalTitle">チェック項目</h2>
+          </div>
+          <button class="icon-button" data-close-habit-modal type="button" aria-label="閉じる">×</button>
+        </header>
+        <div id="habitEditorList" class="habit-editor-list"></div>
+        <form id="addHabitForm" class="add-habit-form">
+          <input id="newHabitEmoji" type="text" maxlength="2" aria-label="絵文字" placeholder="🌿" />
+          <input id="newHabitName" type="text" maxlength="24" placeholder="新しい項目" />
+          <button type="submit">追加</button>
+        </form>
+        <p class="soft-note">項目はいつでも変えて大丈夫。今の自分に合う形がいちばん続きます。</p>
+      </section>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
