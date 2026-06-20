@@ -8,75 +8,214 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="hero">
-        <div>
-          <p class="eyebrow">今日も戻ってこられた</p>
-          <h1>私を大切にするカレンダー</h1>
-          <p class="lead">
-            完璧にするためではなく、「私は私を大切にできる」と思える日を少しずつ増やす場所です。
-          </p>
-        </div>
-        <div class="today-card">
-          <span id="todayLabel">今日</span>
-          <strong id="todayScore">0/3</strong>
-          <small id="todayMood">戻る場所はここにあるよ</small>
-        </div>
-      </header>
-
-      <main>
-        <section class="toolbar" aria-label="月の操作">
-          <button class="icon-button" id="prevMonth" type="button" aria-label="前の月">‹</button>
-          <h2 id="monthTitle"></h2>
-          <button class="icon-button" id="nextMonth" type="button" aria-label="次の月">›</button>
-        </section>
-
-        <section class="gentle-panel goal-panel">
-          <label for="miniGoal">今日の最小目標</label>
-          <div class="goal-row">
-            <input id="miniGoal" type="text" placeholder="朝プロテインだけで勝ち" maxlength="28" />
-            <button id="saveGoal" type="button">保存</button>
-          </div>
-          <p id="goalMessage">小さく決めるほど、戻りやすくなるよ。</p>
-        </section>
-
-        <section class="calendar-card" aria-label="月間カレンダー">
-          <div class="weekday-row" aria-hidden="true">
-            <span>日</span>
-            <span>月</span>
-            <span>火</span>
-            <span>水</span>
-            <span>木</span>
-            <span>金</span>
-            <span>土</span>
-          </div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-        </section>
-
-        <section class="summary-grid">
-          <article class="gentle-panel">
-            <p class="panel-label">今月のまとめ</p>
-            <h3 id="monthTotal">今月は合計0回、自分を大切にできました</h3>
-            <p id="monthEncourage">続ける力より、戻る力を育ててる途中。</p>
-          </article>
-          <article class="gentle-panel">
-            <div class="panel-heading">
-              <p class="panel-label">項目ごとの回数</p>
-              <button id="openHabitEditor" type="button">項目を編集</button>
+      <section class="view active" id="view-calendar" data-view="calendar">
+        <header class="hero">
+          <section class="calendar-card" aria-label="月間カレンダー">
+            <div class="calendar-top">
+              <button class="icon-button" id="prevMonth" type="button" aria-label="前の月">‹</button>
+              <h2 id="monthTitle"></h2>
+              <button class="icon-button" id="nextMonth" type="button" aria-label="次の月">›</button>
             </div>
-            <div id="habitStats" class="habit-stats"></div>
-          </article>
-        </section>
+            <div class="weekday-row" aria-hidden="true">
+              <span>日</span>
+              <span>月</span>
+              <span>火</span>
+              <span>水</span>
+              <span>木</span>
+              <span>金</span>
+              <span>土</span>
+            </div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+          </section>
 
-        <section class="gentle-panel backup-panel">
-          <p class="panel-label">バックアップ</p>
-          <div class="backup-actions">
-            <button id="exportJson" type="button">JSONエクスポート</button>
-            <label class="file-button" for="importJson">JSONインポート</label>
-            <input id="importJson" type="file" accept="application/json" />
-          </div>
-          <p id="backupMessage">スマホ変更や念のための保管に使えます。</p>
-        </section>
-      </main>
+          <section class="today-message-card">
+            <p>Today’s Message</p>
+            <span id="todayMood">戻る場所はちゃんとあるよ</span>
+          </section>
+        </header>
+
+        <main>
+          <section class="gentle-panel goal-panel">
+            <div class="goal-copy">
+              <p class="panel-label">今日やること</p>
+              <label for="miniGoal">今日の最小目標</label>
+              <p id="goalMessage">小さく決めるほど、戻りやすくなるよ。</p>
+            </div>
+            <div class="goal-row">
+              <input id="miniGoal" type="text" placeholder="朝プロテインだけで勝ち" maxlength="28" />
+              <button id="saveGoal" type="button">保存</button>
+            </div>
+          </section>
+        </main>
+      </section>
+
+      <section class="view" id="view-reflection" data-view="reflection">
+        <header class="screen-header" aria-label="ふりかえり">
+          <h1>ふりかえり</h1>
+        </header>
+        <main class="screen-stack">
+          <section class="reflection-dashboard gentle-panel">
+            <div class="period-tabs" role="tablist" aria-label="期間">
+              <button class="active" type="button" data-period="week">週</button>
+              <button type="button" data-period="month">月</button>
+              <button type="button" data-period="all">全期間</button>
+            </div>
+            <p id="periodLabel" class="period-label">今週</p>
+            <div class="progress-ring" id="progressRing" style="--progress: 0">
+              <div>
+                <span>達成率</span>
+                <strong id="progressPercent">0%</strong>
+                <em id="progressCount">0 / 0</em>
+              </div>
+            </div>
+          </section>
+
+          <article class="gentle-panel">
+            <p class="panel-label">よくできたこと TOP3</p>
+            <div id="topHabits" class="rank-list"></div>
+          </article>
+
+          <section class="gentle-panel reflection-target-card">
+            <p class="panel-label">目標達成数</p>
+            <div class="target-grid">
+              <label>
+                <span>週</span>
+                <input id="reflectionTargetWeek" type="number" min="1" max="999" step="1" inputmode="numeric" />
+              </label>
+              <label>
+                <span>月</span>
+                <input id="reflectionTargetMonth" type="number" min="1" max="999" step="1" inputmode="numeric" />
+              </label>
+              <label>
+                <span>全期間</span>
+                <input id="reflectionTargetAll" type="number" min="1" max="999" step="1" inputmode="numeric" />
+              </label>
+            </div>
+            <div class="target-row">
+              <button id="saveReflectionTarget" type="button">保存</button>
+            </div>
+          </section>
+
+          <article class="gentle-panel weekly-note-card">
+            <h3 id="weeklyNote">戻ってきた回数も大切な積み重ね。</h3>
+            <p id="weeklyNoteSub">数字は責めるためではなく、できたことを見つけるためにあるよ。</p>
+          </article>
+        </main>
+      </section>
+
+      <section class="view" id="view-rewards" data-view="rewards">
+        <header class="screen-header">
+          <p class="eyebrow">ごほうび</p>
+          <h1>自分を甘やかす予定も大切に</h1>
+        </header>
+        <main class="screen-stack">
+          <section class="gentle-panel reward-hero">
+            <p class="panel-label">ごほうびポイント</p>
+            <strong id="rewardPoints">0 pt</strong>
+            <span>自分を大切にした回数が、未来の楽しみに変わるよ。</span>
+          </section>
+
+          <section class="gentle-panel">
+            <p class="panel-label">ごほうびリスト</p>
+            <div id="rewardList" class="reward-list"></div>
+          </section>
+
+          <form id="addRewardForm" class="gentle-panel add-reward-form">
+            <p class="panel-label">新しいごほうび</p>
+            <input id="newRewardName" type="text" maxlength="28" placeholder="カフェでゆっくりする" />
+            <div class="reward-form-row">
+              <input id="newRewardCost" type="number" min="10" step="10" value="100" aria-label="必要ポイント" />
+              <button type="submit">追加</button>
+            </div>
+          </form>
+        </main>
+      </section>
+
+      <section class="view" id="view-settings" data-view="settings">
+        <header class="screen-header">
+          <p class="eyebrow">設定</p>
+          <h1>今の自分に合う形に整える</h1>
+        </header>
+        <main class="screen-stack">
+          <section class="gentle-panel">
+            <p class="panel-label">チェック項目とアイコン</p>
+            <div id="settingsHabitEditorList" class="habit-editor-list"></div>
+            <form id="settingsAddHabitForm" class="add-habit-form">
+              <button id="settingsIconPreview" class="icon-select" type="button" aria-label="新しい項目のアイコンを選ぶ">
+                <img class="settings-icon-img" src="images/icons-cropped/icon-heart.png" alt="" aria-hidden="true" />
+              </button>
+              <input id="settingsNewHabitEmoji" type="hidden" value="icon-heart.png" aria-label="アイコン" />
+              <input id="settingsNewHabitName" type="text" maxlength="24" placeholder="新しい項目" />
+              <button type="submit">追加</button>
+            </form>
+          </section>
+
+          <section class="gentle-panel template-panel">
+            <p class="panel-label">テンプレート</p>
+            <div id="templateList" class="task-set-list"></div>
+            <form id="templateForm" class="task-set-form">
+              <input id="templateName" type="text" maxlength="18" placeholder="頑張る日テンプレート" />
+              <div id="templateHabitPicker" class="habit-pick-list" aria-label="テンプレートに入れる項目"></div>
+              <div id="templateSelected" class="selected-habits"></div>
+              <button type="submit">テンプレートを追加</button>
+            </form>
+          </section>
+
+          <section class="gentle-panel task-set-panel">
+            <p class="panel-label">曜日テンプレート</p>
+            <div id="taskSetList" class="task-set-list"></div>
+            <form id="taskSetForm" class="task-set-form">
+              <div id="taskSetHabitPicker" class="habit-pick-list" aria-label="曜日テンプレートに入れる項目"></div>
+              <div id="taskSetSelected" class="selected-habits"></div>
+              <div class="weekday-picks" aria-label="くり返す曜日">
+                <label><input type="checkbox" value="0" />日</label>
+                <label><input type="checkbox" value="1" />月</label>
+                <label><input type="checkbox" value="2" />火</label>
+                <label><input type="checkbox" value="3" />水</label>
+                <label><input type="checkbox" value="4" />木</label>
+                <label><input type="checkbox" value="5" />金</label>
+                <label><input type="checkbox" value="6" />土</label>
+              </div>
+              <button type="submit">セットを追加</button>
+            </form>
+          </section>
+
+          <section class="gentle-panel setting-goal-card">
+            <label for="settingsMiniGoal">最小目標</label>
+            <div class="goal-row">
+              <input id="settingsMiniGoal" type="text" placeholder="朝プロテインだけで勝ち" maxlength="28" />
+              <button id="saveSettingsGoal" type="button">保存</button>
+            </div>
+          </section>
+
+          <section class="gentle-panel theme-panel">
+            <p class="panel-label">アプリテーマ</p>
+            <div class="theme-options">
+              <button type="button" data-theme-choice="rose">Rose</button>
+              <button type="button" data-theme-choice="beige" aria-label="ベージュ">Beige</button>
+              <button type="button" data-theme-choice="lavender" aria-label="ラベンダー">Lavender</button>
+              <button type="button" data-theme-choice="night">Night</button>
+            </div>
+          </section>
+
+          <section class="gentle-panel backup-panel">
+            <p class="panel-label">JSONバックアップ</p>
+            <div class="backup-actions">
+              <button id="exportJson" type="button">JSONエクスポート</button>
+              <label class="file-button" for="importJson">JSONインポート</label>
+              <input id="importJson" type="file" accept="application/json" />
+            </div>
+            <p id="backupMessage">スマホ変更や念のための保管に使えます。</p>
+          </section>
+        </main>
+      </section>
+
+      <nav class="bottom-nav" aria-label="下部ナビゲーション">
+        <a class="active" href="#calendar" data-nav-view="calendar" aria-current="page"><span class="nav-icon calendar"></span>カレンダー</a>
+        <a href="#reflection" data-nav-view="reflection"><span class="nav-icon reflection"></span>ふりかえり</a>
+        <a href="#rewards" data-nav-view="rewards"><span class="nav-icon reward"></span>ごほうび</a>
+        <a href="#settings" data-nav-view="settings"><span class="nav-icon settings"></span>設定</a>
+      </nav>
     </div>
 
     <div id="dayModal" class="modal" aria-hidden="true">
@@ -91,10 +230,16 @@
         </header>
         <div id="dayMessage" class="day-message"></div>
         <div id="habitChecks" class="habit-checks"></div>
+        <form id="applyTemplateForm" class="day-template-form">
+          <select id="templateSelect" aria-label="テンプレートを選ぶ"></select>
+          <button type="submit">呼び出す</button>
+        </form>
+        <form id="dayTaskForm" class="day-task-form">
+          <select id="dayTaskSelect" aria-label="今日追加する項目"></select>
+          <button type="submit">追加</button>
+        </form>
         <label class="memo-label" for="dayMemo">1行メモ</label>
         <input id="dayMemo" type="text" maxlength="60" placeholder="今日の自分にひとこと" />
-        <button id="generateMessage" class="wide-button" type="button">今日のメッセージ</button>
-        <div id="aiMessage" class="ai-message"></div>
       </section>
     </div>
 
@@ -115,6 +260,25 @@
           <button type="submit">追加</button>
         </form>
         <p class="soft-note">項目はいつでも変えて大丈夫。今の自分に合う形がいちばん続きます。</p>
+      </section>
+    </div>
+
+    <div id="rewardCelebrateModal" class="modal reward-celebrate-modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-reward-modal></div>
+      <section class="reward-celebrate-card" role="dialog" aria-modal="true" aria-labelledby="rewardCelebrateTitle">
+        <div class="reward-earned">
+          <span>ごほうびポイント</span>
+          <strong id="rewardSpentDisplay">+0<span>pt</span></strong>
+        </div>
+        <div class="reward-current">
+          <span>現在のごほうびポイント</span>
+          <strong id="rewardRemainingDisplay">0<span>pt</span></strong>
+        </div>
+        <div class="reward-celebrate-actions">
+          <button type="button" data-close-reward-modal>とじる</button>
+          <button id="undoRewardAchievement" type="button">間違えて押した</button>
+          <button type="button" data-nav-view="rewards" data-close-reward-modal>ごほうびリストを見る</button>
+        </div>
       </section>
     </div>
 
