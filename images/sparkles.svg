@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="126" height="64" viewBox="0 0 126 64" fill="none">
+  <path d="M23 8L25.6 15.4L33 18L25.6 20.6L23 28L20.4 20.6L13 18L20.4 15.4L23 8Z" fill="#D7B27A" opacity=".82"/>
+  <path d="M103 5L105 10.8L111 13L105 15.2L103 21L101 15.2L95 13L101 10.8L103 5Z" fill="#D7B27A" opacity=".72"/>
+  <path d="M11 40L12.4 44.6L17 46L12.4 47.4L11 52L9.6 47.4L5 46L9.6 44.6L11 40Z" fill="#E2C698" opacity=".7"/>
+  <path d="M116 42L117.5 47L123 49L117.5 51L116 56L114.5 51L109 49L114.5 47L116 42Z" fill="#E2C698" opacity=".7"/>
+  <circle cx="49" cy="15" r="1.6" fill="#D7B27A" opacity=".7"/>
+  <circle cx="78" cy="50" r="1.4" fill="#D7B27A" opacity=".68"/>
+</svg>
