@@ -1514,6 +1514,8 @@ input[type="text"]:focus {
 
 .day-message {
   background: var(--soft);
+  margin: 14px 0 0;
+  min-height: auto;
 }
 
 .ai-message {
@@ -1555,6 +1557,10 @@ input[type="text"]:focus {
 }
 
 .check-emoji {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
   font-size: 1.2rem;
 }
 
@@ -1598,6 +1604,30 @@ input[type="text"]:focus {
   font-size: 0.78rem;
 }
 
+.select-with-icon {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.select-icon-preview {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid color-mix(in srgb, var(--line) 82%, var(--button));
+  border-radius: 13px;
+  background: rgba(255, 251, 244, 0.78);
+}
+
+.select-icon-img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+}
+
 .day-template-form button,
 .day-task-form button {
   border-radius: 14px;
@@ -1609,7 +1639,7 @@ input[type="text"]:focus {
 }
 
 .scheduled-row {
-  grid-template-columns: auto 1fr auto auto auto;
+  grid-template-columns: auto 28px 1fr auto auto;
 }
 
 .set-badge {
@@ -1624,7 +1654,7 @@ input[type="text"]:focus {
 }
 
 .day-custom-row {
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 28px 1fr auto;
 }
 
 .day-custom-row .delete-habit-button {
@@ -1775,9 +1805,11 @@ input[type="text"]:focus {
 }
 
 .tiny-habit-icon {
-  width: 20px;
-  height: 20px;
-  margin: 0 auto;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin: 0 4px 0 0;
+  vertical-align: -4px;
 }
 
 .habit-icon-img {
@@ -1910,7 +1942,7 @@ input[type="text"]:focus {
 .task-set-item p {
   color: var(--muted);
   font-size: 0.64rem;
-  line-height: 1.45;
+  line-height: 1.8;
 }
 
 .task-set-item button {

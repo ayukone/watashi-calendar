@@ -123,6 +123,7 @@ const habitChecks = document.querySelector("#habitChecks");
 const dayMemo = document.querySelector("#dayMemo");
 const dayTaskForm = document.querySelector("#dayTaskForm");
 const dayTaskSelect = document.querySelector("#dayTaskSelect");
+const dayTaskSelectIcon = document.querySelector("#dayTaskSelectIcon");
 const aiMessage = document.querySelector("#aiMessage");
 const habitModal = document.querySelector("#habitModal");
 const habitEditorList = document.querySelector("#habitEditorList");
@@ -183,6 +184,7 @@ if (openHabitEditorButton) {
 }
 document.querySelector("#addHabitForm").addEventListener("submit", addHabit);
 if (dayTaskForm) dayTaskForm.addEventListener("submit", addDayTask);
+if (dayTaskSelect) dayTaskSelect.addEventListener("change", renderDayTaskSelectIcon);
 if (applyTemplateForm) applyTemplateForm.addEventListener("submit", applyTemplateToDay);
 document.querySelector("#exportJson").addEventListener("click", exportJson);
 importJson.addEventListener("change", importBackup);
@@ -620,9 +622,9 @@ function renderDayModal() {
     row.className = "check-row scheduled-row";
     row.innerHTML = `
       <input id="${id}" type="checkbox" ${record.checks[habit.id] ? "checked" : ""} />
+      <span class="check-emoji">${getIconMarkup(habit.emoji)}</span>
       <span class="check-name">${habit.name}</span>
       <em class="set-badge">${habit.setName}</em>
-      <span class="check-emoji">${getIconMarkup(habit.emoji)}</span>
       <button class="delete-habit-button" type="button" aria-label="${habit.name}を今日だけ外す">×</button>
     `;
     row.querySelector("input").addEventListener("change", (event) => {
@@ -638,6 +640,7 @@ function renderDayModal() {
     row.className = "check-row day-custom-row";
     row.innerHTML = `
       <input id="${id}" type="checkbox" ${record.checks[habit.id] ? "checked" : ""} />
+      <span class="check-emoji">${getIconMarkup(habit.emoji)}</span>
       <input class="day-task-name-input" type="text" value="${escapeAttribute(habit.name)}" maxlength="24" aria-label="今日だけの項目名" />
       <button class="delete-habit-button" type="button" aria-label="${habit.name}を削除">×</button>
     `;
@@ -703,9 +706,7 @@ function applyTemplateToDay(event) {
   }
 
   const record = getDayRecord(selectedKey);
-  const existingSourceIds = new Set(record.customHabits.map((habit) => habit.sourceHabitId).filter(Boolean));
   template.tasks.forEach((task) => {
-    if (task.sourceHabitId && existingSourceIds.has(task.sourceHabitId)) return;
     record.customHabits.push({
       id: createId(),
       sourceHabitId: task.sourceHabitId || "",
@@ -913,10 +914,17 @@ function renderTemplateSelect() {
 function renderDayTaskSelect() {
   if (!dayTaskSelect) return;
   const options = state.habits
-    .map((habit) => `<option value="${habit.id}">${habit.name}</option>`)
+    .map((habit) => `<option value="${habit.id}">${getOptionIconLabel(habit.emoji)} ${habit.name}</option>`)
     .join("");
   dayTaskSelect.innerHTML = options ? `<option value="">項目を選ぶ（設定から追加できます）</option>${options}` : `<option value="">追加できる項目なし（設定から追加できます）</option>`;
   dayTaskSelect.disabled = !options;
+  renderDayTaskSelectIcon();
+}
+
+function renderDayTaskSelectIcon() {
+  if (!dayTaskSelectIcon || !dayTaskSelect) return;
+  const habit = state.habits.find((item) => item.id === dayTaskSelect.value) || state.habits[0];
+  dayTaskSelectIcon.innerHTML = habit ? getIconMarkup(habit.emoji, "select-icon-img") : "";
 }
 
 function addTemplate(event) {
@@ -1128,6 +1136,23 @@ function habitsToTemplateTasks(habitIds) {
 function formatTaskIcon(icon) {
   const normalized = getHabitIcon(icon);
   return normalized.endsWith(".png") ? getIconMarkup(normalized, "tiny-habit-icon") : `${normalized} `;
+}
+
+function getOptionIconLabel(icon) {
+  const iconName = getHabitIcon(icon);
+  const labels = {
+    "icon-sun.png": "☀",
+    "icon-dumbbell.png": "✦",
+    "icon-moon.png": "☾",
+    "icon-book.png": "♧",
+    "icon-cup.png": "☕",
+    "icon-heart.png": "♡",
+    "icon-flower.png": "✿",
+    "icon-music.png": "♪",
+    "icon-drop.png": "♢",
+    "icon-sakura.png": "✿",
+  };
+  return labels[iconName] || "♡";
 }
 
 function addReward(event) {

@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>私を大切にするカレンダー</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta name="application-name" content="おかえりカレンダー" />
+    <meta name="apple-mobile-web-app-title" content="おかえりカレンダー" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <title>おかえりカレンダー</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -229,18 +231,21 @@
           </div>
           <button class="icon-button" data-close-modal type="button" aria-label="閉じる">×</button>
         </header>
-        <div id="dayMessage" class="day-message"></div>
         <div id="habitChecks" class="habit-checks"></div>
+        <form id="dayTaskForm" class="day-task-form">
+          <div class="select-with-icon">
+            <span id="dayTaskSelectIcon" class="select-icon-preview" aria-hidden="true"></span>
+            <select id="dayTaskSelect" aria-label="今日追加する項目"></select>
+          </div>
+          <button type="submit">追加</button>
+        </form>
         <form id="applyTemplateForm" class="day-template-form">
           <select id="templateSelect" aria-label="テンプレートを選ぶ"></select>
           <button type="submit">呼び出す</button>
         </form>
-        <form id="dayTaskForm" class="day-task-form">
-          <select id="dayTaskSelect" aria-label="今日追加する項目"></select>
-          <button type="submit">追加</button>
-        </form>
         <label class="memo-label" for="dayMemo">1行メモ</label>
         <input id="dayMemo" type="text" maxlength="60" placeholder="今日の自分にひとこと" />
+        <div id="dayMessage" class="day-message"></div>
       </section>
     </div>
 
